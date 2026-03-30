@@ -1,0 +1,9 @@
+name: LottoBox
+version: 1.0
+main: com.tinnyspoon.lottobox.LottoBox
+api-version: 1.21.11
+author: tinnyspoon
+description: Crates plugin
+
+commands:
+  lbnew:
