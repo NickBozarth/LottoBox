@@ -7,3 +7,5 @@ description: Crates plugin
 
 commands:
   lbnew:
+  lbset:
+  lbdisplay:
