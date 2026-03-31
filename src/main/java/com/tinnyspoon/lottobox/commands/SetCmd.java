@@ -9,18 +9,19 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import com.tinnyspoon.lottobox.utils.Config;
+import com.tinnyspoon.lottobox.utils.Configs;
 import com.tinnyspoon.lottobox.utils.ParseName;
 import com.tinnyspoon.lottobox.utils.PersistentData;
 
 public class SetCmd implements CommandExecutor {
 
-    private File cratesConfigFile;
-    private FileConfiguration cratesConfig;
+    private Config cratesConfig = Configs.cratesConfig;
 
-    public SetCmd(File dataFolder) {
-        cratesConfigFile = new File(dataFolder, "crates.yml");
-        cratesConfig = YamlConfiguration.loadConfiguration(cratesConfigFile);
-    }
+    // public SetCmd() {
+    //     this.cratesConfig = Configs.cratesConfig;
+    // }
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -32,7 +33,7 @@ public class SetCmd implements CommandExecutor {
         String crateName = ParseName.parseCrateName(args);
         if (crateName == null) return false;
 
-        if (!cratesConfig.contains(crateName)) {
+        if (!cratesConfig.config.contains(crateName)) {
             player.sendMessage("Crate [" + crateName + "] does not exist");
             return true;
         }

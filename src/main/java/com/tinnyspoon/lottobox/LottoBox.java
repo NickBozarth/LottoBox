@@ -11,21 +11,21 @@ import com.tinnyspoon.lottobox.commands.SetCmd;
 import com.tinnyspoon.lottobox.handler.InvOpen;
 import com.tinnyspoon.lottobox.loot.LootItem;
 import com.tinnyspoon.lottobox.loot.LootTable;
+import com.tinnyspoon.lottobox.utils.Configs;
 import com.tinnyspoon.lottobox.utils.PersistentData;
 
 public class LottoBox extends JavaPlugin {
     
     @Override
     public void onEnable() {
+        Configs.loadDataFolder(getDataFolder());
         PersistentData.setPlugin(this);
-        LootItem.setDataFolder(getDataFolder());
-        LootTable.setDataFolder(getDataFolder());
 
-        this.registerCommand("lbnew", new New(this.getDataFolder()));
-        this.registerCommand("lbset", new SetCmd(this.getDataFolder()));
+        this.registerCommand("lbnew", new New());
+        this.registerCommand("lbset", new SetCmd());
         this.registerCommand("lbdisplay", new DisplayCmd());
 
-        this.getServer().getPluginManager().registerEvents(new InvOpen(this.getDataFolder()), this);
+        this.getServer().getPluginManager().registerEvents(new InvOpen(), this);
     }
 
 

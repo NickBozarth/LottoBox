@@ -13,17 +13,17 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
+import com.tinnyspoon.lottobox.utils.Config;
+import com.tinnyspoon.lottobox.utils.Configs;
 import com.tinnyspoon.lottobox.utils.ParseName;
 
 public class New implements CommandExecutor {
 
-    private File cratesConfigFile;
-    private FileConfiguration cratesConfig;
+    private static Config cratesConfig = Configs.cratesConfig;
 
-    public New(File dataFolder) {
-        cratesConfigFile = new File(dataFolder, "crates.yml");
-        cratesConfig = YamlConfiguration.loadConfiguration(cratesConfigFile);
-    }
+    // public New() {
+    //     this.cratesConfig = Configs.cratesConfig;
+    // }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -31,27 +31,23 @@ public class New implements CommandExecutor {
         if (crateName == null) return false;
 
 
-        if (cratesConfig.contains(crateName)) {
+        if (cratesConfig.config.contains(crateName)) {
             sender.sendMessage("Crate [" + crateName + "] already exists.");
             return true;
         }
 
         // String configSectionName = ;
-        cratesConfig.set(crateName + ".key-material", "TRIPWIRE_HOOK");
-        cratesConfig.createSection(crateName + ".items.My Item");
-        ConfigurationSection sec = cratesConfig.getConfigurationSection(crateName + ".items.My Item");
+        cratesConfig.config.set(crateName + ".key-material", "TRIPWIRE_HOOK");
+        cratesConfig.config.createSection(crateName + ".items.My Item");
+        ConfigurationSection sec = cratesConfig.config.getConfigurationSection(crateName + ".items.My Item");
         sec.set("weight", 50);
         sec.set("display-item", "DIRT");
         sec.set("item.name", "DIRT");
         sec.set("item.quantity", 64);
         sec.set("command", "say hello");
         sec.set("commands", Arrays.asList("say hello", "msg <player> hello"));
-
-        try {
-            cratesConfig.save(cratesConfigFile);
-        } catch (IOException e) {
-            sender.sendMessage("Error when creating new crate: " + e.getMessage());
-        }
+        
+        cratesConfig.save();
 
         sender.sendMessage("Created new crate " + crateName);
 

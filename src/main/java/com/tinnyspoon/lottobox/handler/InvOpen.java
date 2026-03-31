@@ -14,23 +14,25 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.tinnyspoon.lottobox.loot.LootItem;
 import com.tinnyspoon.lottobox.loot.LootTable;
+import com.tinnyspoon.lottobox.utils.Config;
+import com.tinnyspoon.lottobox.utils.Configs;
 import com.tinnyspoon.lottobox.utils.PersistentData;
 
 public class InvOpen implements Listener {
 
-    private File locationConfigFile;
-    private FileConfiguration locationConfig;
+    public Config locationsConfig = Configs.locationsConfig;
 
-    public InvOpen(File dataFolder) {
-        locationConfigFile = new File(dataFolder, "location.yml");
-        locationConfig = YamlConfiguration.loadConfiguration(locationConfigFile);
-    }
-
+    // public InvOpen() {
+    //     this.locationsConfig = Configs.locationsConfig;
+    // }
 
     @EventHandler
     public void onInventoryOpen(@NotNull InventoryOpenEvent event) {
@@ -38,15 +40,57 @@ public class InvOpen implements Listener {
             return;
         }
 
-        @Nullable String settingCrateName = PersistentData.getPlayerString(player, "setting-crate");
-
-        if (settingCrateName != null && !settingCrateName.equalsIgnoreCase("None")) {
+        String settingCrateName = getSetCrateName(player);
+        if (settingCrateName != null) {
             handleSetCrate(event, player, settingCrateName);
             return;
         }
 
-        handleCrateOpen(event);
+        String openCrateName = getOpenCrateName(event, player);
+        if (openCrateName != null) {
+            handleCrateOpen(event, player, openCrateName);
+            return;
+        }
     }
+    
+    
+    private @Nullable String getSetCrateName(Player player) {
+        String settingCrateName = PersistentData.getPlayerString(player, "setting-crate");
+        if (settingCrateName == null || settingCrateName.equalsIgnoreCase("None")) {
+            return null;
+        } else {
+            return settingCrateName;
+        }
+    }
+
+    private @Nullable String getOpenCrateName(InventoryOpenEvent event, Player player) {
+        InventoryHolder holder = event.getInventory().getHolder();
+        if (holder instanceof BlockState blockState) {
+            Location loc = blockState.getLocation();
+            String locString = String.format("%d,%d,%d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+            String crateName = locationsConfig.config.getString(locString);
+
+            if (crateName == null) return null;
+
+            event.setCancelled(true);
+
+            ItemStack mainHandItem = player.getInventory().getItemInMainHand();
+            String crateKeyName = PersistentData.getItemString(mainHandItem, "crate-key");
+            if (crateKeyName == null) {
+                player.sendMessage("You must have a key to open this crate");
+                return null;
+            }
+            if (!crateKeyName.equals(crateName)) {
+                player.sendMessage("Incorrect key for this crate");
+                return null;
+            };
+
+            return crateName;
+        }
+        return null;
+    }
+
+
 
 
     private void handleSetCrate(InventoryOpenEvent event, Player player, String crateName) {
@@ -56,19 +100,16 @@ public class InvOpen implements Listener {
             Location loc = blockstate.getLocation();
             String locString = String.format("%d,%d,%d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 
-            if (locationConfig.contains(locString)) {
+            if (locationsConfig.config.contains(locString)) {
                 player.sendMessage("Crate already exists there");
                 PersistentData.removePlayerString(player, "setting-crate");
                 return;
             }
 
-            locationConfig.set(locString, crateName);
+            locationsConfig.config.set(locString, crateName);
 
-            try {
-                locationConfig.save(locationConfigFile);
+            if (locationsConfig.save()) {
                 player.sendMessage("Successfully created crate [" + crateName + "]");
-            } catch (IOException e) {
-                player.sendMessage("Failed to set crate");
             }
 
             PersistentData.removePlayerString(player, "setting-crate");
@@ -76,24 +117,14 @@ public class InvOpen implements Listener {
     }
 
     
-    public void handleCrateOpen(InventoryOpenEvent event) {
-        InventoryHolder holder = event.getInventory().getHolder();
-        if (holder instanceof BlockState blockState) {
-            Location loc = blockState.getLocation();
-            String locString = String.format("%d,%d,%d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-    
-            String crateName = locationConfig.getString(locString);
-            if (crateName == null) return;
-            event.getPlayer().sendMessage("Opened " + crateName);
+    public void handleCrateOpen(InventoryOpenEvent event, Player player, String crateName) {
+        player.sendMessage("Opened " + crateName);
 
-            LootTable lootTable = LootTable.fromName(crateName);
-            ArrayList<LootItem> lootPool = lootTable.genLootPool();
+        LootTable lootTable = LootTable.fromName(crateName);
+        ArrayList<LootItem> lootPool = lootTable.genLootPool();
 
-            for (LootItem item : lootPool) {
-                Bukkit.broadcastMessage(item.itemName);
-            }
-
-            event.setCancelled(true);
+        for (LootItem item : lootPool) {
+            Bukkit.broadcastMessage(item.itemName);
         }
     }
 }

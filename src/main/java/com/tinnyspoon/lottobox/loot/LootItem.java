@@ -15,20 +15,17 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class LootItem {
-    private static File cratesConfigFile;
-    private static FileConfiguration cratesConfig;
+import com.tinnyspoon.lottobox.utils.Config;
+import com.tinnyspoon.lottobox.utils.Configs;
 
-    public static void setDataFolder(File dataFolder) {
-        LootItem.cratesConfigFile = new File(dataFolder, "crates.yml");
-        LootItem.cratesConfig = YamlConfiguration.loadConfiguration(cratesConfigFile);
-    }
+public class LootItem {
 
 
     private ConfigurationSection itemSection;
     public String itemName;
     public @NotNull Material displayItem;
     public @NotNull int weight;
+    public static Config cratesConfig = Configs.cratesConfig;
 
     public static @Nullable LootItem loadItem(String crateName, String itemName) {
         LootItem item = new LootItem();
@@ -36,11 +33,11 @@ public class LootItem {
 
         
 
-        item.itemSection = LootItem.cratesConfig.getConfigurationSection(crateName + ".items." + itemName);
+        item.itemSection = LootItem.cratesConfig.config.getConfigurationSection(crateName + ".items." + itemName);
         if (item.itemSection == null) {
             Bukkit.getLogger().log(Level.SEVERE, "Failed to fetch crates.yml [" + crateName + ".items." + itemName + "]");
 
-            for (String key : LootItem.cratesConfig.getKeys(true)) {
+            for (String key : LootItem.cratesConfig.config.getKeys(true)) {
                 Bukkit.getLogger().log(Level.SEVERE, key);
             }
 

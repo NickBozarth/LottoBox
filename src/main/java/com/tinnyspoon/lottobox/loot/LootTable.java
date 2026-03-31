@@ -14,26 +14,23 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class LootTable {
-    private static File cratesConfigFile;
-    private static FileConfiguration cratesConfig;
+import com.tinnyspoon.lottobox.utils.Config;
+import com.tinnyspoon.lottobox.utils.Configs;
 
-    public static void setDataFolder(File dataFolder) {
-        LootTable.cratesConfigFile = new File(dataFolder, "crates.yml");
-        LootTable.cratesConfig = YamlConfiguration.loadConfiguration(cratesConfigFile);
-    }
+public class LootTable {
 
     private @NotNull Material keyMaterial;
     private ArrayList<LootItem> lootItems = new ArrayList<>();
     private ArrayList<Integer> weights = new ArrayList<>();
     private String crateName;
+    private static Config cratesConfig = Configs.cratesConfig;
 
     public static @Nullable LootTable fromName(String crateName) {
         LootTable table = new LootTable();
         table.crateName = crateName;
 
         Bukkit.broadcastMessage("Getting crate [" + crateName + "]");
-        ConfigurationSection thisSection = LootTable.cratesConfig.getConfigurationSection(crateName);
+        ConfigurationSection thisSection = LootTable.cratesConfig.config.getConfigurationSection(crateName);
         if (thisSection == null) {
             Bukkit.getLogger().log(Level.SEVERE, "CRATE [" + crateName + "] does not exist");
             return null;
@@ -81,7 +78,7 @@ public class LootTable {
 
     public ArrayList<LootItem> genLootPool() {
         int totalWeight = this.getTotalWeight();
-        
+
         if (this.weights.size() == 0) {
             Bukkit.getLogger().log(Level.SEVERE, "Loot pool for crate [" + this.crateName + "] cannot be empty");
             return new ArrayList<>();

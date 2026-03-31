@@ -1,9 +1,12 @@
-com\tinnyspoon\lottobox\commands\SetCmd.class
 com\tinnyspoon\lottobox\loot\LootTable.class
-com\tinnyspoon\lottobox\handler\InvOpen.class
 com\tinnyspoon\lottobox\utils\PersistentData.class
 com\tinnyspoon\lottobox\commands\New.class
+com\tinnyspoon\lottobox\utils\Config.class
+com\tinnyspoon\lottobox\utils\ParseName.class
+com\tinnyspoon\lottobox\commands\GetCmd.class
+com\tinnyspoon\lottobox\utils\Configs.class
+com\tinnyspoon\lottobox\commands\SetCmd.class
+com\tinnyspoon\lottobox\handler\InvOpen.class
 com\tinnyspoon\lottobox\commands\DisplayCmd.class
 com\tinnyspoon\lottobox\loot\LootItem.class
 com\tinnyspoon\lottobox\LottoBox.class
-com\tinnyspoon\lottobox\utils\ParseName.class
