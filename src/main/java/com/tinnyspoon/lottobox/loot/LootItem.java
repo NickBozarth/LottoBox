@@ -58,6 +58,10 @@ public class LootItem {
         return item;
     }
 
+    // public ItemStack asItemStack() {
+
+    // }
+
 
     private void winItem(Player player) {
         String itemString = this.itemSection.getString("item.name");

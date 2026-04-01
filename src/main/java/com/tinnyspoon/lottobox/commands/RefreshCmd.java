@@ -4,11 +4,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class GetCmd implements CommandExecutor {
+import com.tinnyspoon.lottobox.utils.Configs;
+
+public class RefreshCmd implements CommandExecutor {
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'onCommand'");
+        Configs.refresh();
+        return true;
     }
     
 }

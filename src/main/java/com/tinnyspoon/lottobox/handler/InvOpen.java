@@ -119,6 +119,8 @@ public class InvOpen implements Listener {
     
     public void handleCrateOpen(InventoryOpenEvent event, Player player, String crateName) {
         player.sendMessage("Opened " + crateName);
+        ItemStack key = player.getInventory().getItemInMainHand();
+        key.setAmount(key.getAmount() - 1);
 
         LootTable lootTable = LootTable.fromName(crateName);
         ArrayList<LootItem> lootPool = lootTable.genLootPool();

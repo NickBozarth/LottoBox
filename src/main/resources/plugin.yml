@@ -9,3 +9,8 @@ commands:
   lbnew:
   lbset:
   lbdisplay:
+  lbgive:
+  lbrefresh:
+
+  lbdelete:
+  lbaddtopool:

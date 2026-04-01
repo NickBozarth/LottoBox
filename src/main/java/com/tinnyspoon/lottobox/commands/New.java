@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import com.tinnyspoon.lottobox.utils.Config;
@@ -31,6 +32,9 @@ public class New implements CommandExecutor {
         if (crateName == null) return false;
 
 
+        if (!(sender instanceof Player player)) return false;
+
+
         if (cratesConfig.config.contains(crateName)) {
             sender.sendMessage("Crate [" + crateName + "] already exists.");
             return true;
@@ -42,8 +46,9 @@ public class New implements CommandExecutor {
         ConfigurationSection sec = cratesConfig.config.getConfigurationSection(crateName + ".items.My Item");
         sec.set("weight", 50);
         sec.set("display-item", "DIRT");
-        sec.set("item.name", "DIRT");
-        sec.set("item.quantity", 64);
+        // sec.set("item.name", "DIRT");
+        sec.set("item", player.getInventory().getItemInMainHand());
+        // sec.set("item.quantity", 64);
         sec.set("command", "say hello");
         sec.set("commands", Arrays.asList("say hello", "msg <player> hello"));
         

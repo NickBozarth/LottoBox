@@ -37,4 +37,19 @@ public class PersistentData {
         NamespacedKey nskey = new NamespacedKey(PersistentData.plugin, key);
         return itemMeta.getPersistentDataContainer().get(nskey, PersistentDataType.STRING);
     }
+
+    public static void setItemString(ItemStack item, String key, String value) {
+        ItemMeta itemMeta = item.getItemMeta();
+        if (itemMeta == null) return;
+        NamespacedKey nskey = new NamespacedKey(PersistentData.plugin, key);
+        itemMeta.getPersistentDataContainer().set(nskey, PersistentDataType.STRING, value);
+        item.setItemMeta(itemMeta);
+    }
+
+    public static boolean itemHasKey(ItemStack item, String key) {
+        ItemMeta itemMeta = item.getItemMeta();
+        if (itemMeta == null) return false;
+        NamespacedKey nskey = new NamespacedKey(PersistentData.plugin, key);
+        return itemMeta.getPersistentDataContainer().has(nskey);
+    }
 }
