@@ -5,6 +5,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import com.tinnyspoon.lottobox.commands.Delete;
 import com.tinnyspoon.lottobox.commands.DisplayCmd;
 import com.tinnyspoon.lottobox.commands.GiveCmd;
 import com.tinnyspoon.lottobox.commands.New;
@@ -27,6 +28,7 @@ public class LottoBox extends JavaPlugin {
         this.registerCommand("lbset", new SetCmd());
         this.registerCommand("lbdisplay", new DisplayCmd());
         this.registerCommand("lbgive", new GiveCmd());
+        this.registerCommand("lbdelete", new Delete());
 
         this.getServer().getPluginManager().registerEvents(new InvOpen(), this);
         this.getServer().getPluginManager().registerEvents(new BlockPlace(), this);

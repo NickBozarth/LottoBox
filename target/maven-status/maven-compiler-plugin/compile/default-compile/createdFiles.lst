@@ -3,6 +3,8 @@ com\tinnyspoon\lottobox\utils\PersistentData.class
 com\tinnyspoon\lottobox\commands\New.class
 com\tinnyspoon\lottobox\commands\GiveCmd.class
 com\tinnyspoon\lottobox\utils\Config.class
+com\tinnyspoon\lottobox\commands\Delete.class
+com\tinnyspoon\lottobox\commands\RefreshCmd.class
 com\tinnyspoon\lottobox\utils\ParseName.class
 com\tinnyspoon\lottobox\utils\Configs.class
 com\tinnyspoon\lottobox\commands\SetCmd.class

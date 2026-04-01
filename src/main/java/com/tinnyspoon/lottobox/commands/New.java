@@ -31,8 +31,10 @@ public class New implements CommandExecutor {
         String crateName = ParseName.parseCrateName(args);
         if (crateName == null) return false;
 
-
-        if (!(sender instanceof Player player)) return false;
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage("Only players can use this command");
+            return true;
+        }
 
 
         if (cratesConfig.config.contains(crateName)) {
@@ -45,10 +47,8 @@ public class New implements CommandExecutor {
         cratesConfig.config.createSection(crateName + ".items.My Item");
         ConfigurationSection sec = cratesConfig.config.getConfigurationSection(crateName + ".items.My Item");
         sec.set("weight", 50);
-        sec.set("display-item", "DIRT");
-        // sec.set("item.name", "DIRT");
-        sec.set("item", player.getInventory().getItemInMainHand());
-        // sec.set("item.quantity", 64);
+        sec.set("display-item", player.getInventory().getItemInMainHand());
+        sec.set("item", "...");
         sec.set("command", "say hello");
         sec.set("commands", Arrays.asList("say hello", "msg <player> hello"));
         

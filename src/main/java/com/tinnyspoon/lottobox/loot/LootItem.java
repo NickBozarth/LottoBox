@@ -23,7 +23,7 @@ public class LootItem {
 
     private ConfigurationSection itemSection;
     public String itemName;
-    public @NotNull Material displayItem;
+    public @NotNull ItemStack displayItem;
     public @NotNull int weight;
     public static Config cratesConfig = Configs.cratesConfig;
 
@@ -45,11 +45,8 @@ public class LootItem {
         }
 
 
-        try {
-            item.displayItem = Material.valueOf(item.itemSection.getString("display-item", "DIRT"));
-        } catch (IllegalArgumentException e) {
-            item.displayItem = Material.DIRT;
-        }
+        item.displayItem = item.itemSection.getItemStack("display-item");
+        if (item.displayItem == null) return null;
 
         item.weight = item.itemSection.getInt("weight", 0);
 
@@ -57,10 +54,6 @@ public class LootItem {
 
         return item;
     }
-
-    // public ItemStack asItemStack() {
-
-    // }
 
 
     private void winItem(Player player) {

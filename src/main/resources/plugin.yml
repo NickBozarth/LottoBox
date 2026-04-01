@@ -11,6 +11,6 @@ commands:
   lbdisplay:
   lbgive:
   lbrefresh:
-
   lbdelete:
-  lbaddtopool:
+
+  lbadditem:
