@@ -1,6 +1,7 @@
 com\tinnyspoon\lottobox\loot\LootTable.class
 com\tinnyspoon\lottobox\utils\PersistentData.class
 com\tinnyspoon\lottobox\commands\New.class
+com\tinnyspoon\lottobox\handler\InvClick.class
 com\tinnyspoon\lottobox\commands\GiveCmd.class
 com\tinnyspoon\lottobox\utils\Config.class
 com\tinnyspoon\lottobox\commands\Delete.class
@@ -9,6 +10,9 @@ com\tinnyspoon\lottobox\utils\ParseName.class
 com\tinnyspoon\lottobox\utils\Configs.class
 com\tinnyspoon\lottobox\commands\SetCmd.class
 com\tinnyspoon\lottobox\handler\InvOpen.class
+com\tinnyspoon\lottobox\commands\ListCmd.class
+com\tinnyspoon\lottobox\commands\AddItemCmd.class
+com\tinnyspoon\lottobox\handler\BlockBreak.class
 com\tinnyspoon\lottobox\commands\DisplayCmd.class
 com\tinnyspoon\lottobox\handler\BlockPlace.class
 com\tinnyspoon\lottobox\loot\LootItem.class

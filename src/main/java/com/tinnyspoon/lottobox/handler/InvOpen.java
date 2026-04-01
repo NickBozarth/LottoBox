@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -109,7 +110,7 @@ public class InvOpen implements Listener {
             locationsConfig.config.set(locString, crateName);
 
             if (locationsConfig.save()) {
-                player.sendMessage("Successfully created crate [" + crateName + "]");
+                player.sendMessage("Successfully created crate [" + crateName + "§r]");
             }
 
             PersistentData.removePlayerString(player, "setting-crate");
@@ -127,8 +128,12 @@ public class InvOpen implements Listener {
         
         ArrayList<LootItem> lootPool = lootTable.genLootPool();
 
-        for (LootItem item : lootPool) {
-            Bukkit.broadcastMessage(item.itemName);
+        Inventory inv = Bukkit.createInventory(player, 27, "LottoBox");
+        for (int i = 0; i < 27; i++) {
+            LootItem item = lootPool.get(i);
+            if (item == null) continue;
+            inv.setItem(i, item.displayItem);
         }
+        player.openInventory(inv);
     }
 }

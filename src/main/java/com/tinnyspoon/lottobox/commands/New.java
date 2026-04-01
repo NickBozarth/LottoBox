@@ -38,19 +38,19 @@ public class New implements CommandExecutor {
 
 
         if (cratesConfig.config.contains(crateName)) {
-            sender.sendMessage("Crate [" + crateName + "] already exists.");
+            sender.sendMessage("Crate [" + crateName + "§r] already exists.");
             return true;
         }
 
         // String configSectionName = ;
         cratesConfig.config.set(crateName + ".key-material", "TRIPWIRE_HOOK");
-        cratesConfig.config.createSection(crateName + ".items.My Item");
-        ConfigurationSection sec = cratesConfig.config.getConfigurationSection(crateName + ".items.My Item");
-        sec.set("weight", 50);
-        sec.set("display-item", player.getInventory().getItemInMainHand());
-        sec.set("item", "...");
-        sec.set("command", "say hello");
-        sec.set("commands", Arrays.asList("say hello", "msg <player> hello"));
+        cratesConfig.config.set(crateName + ".items", Arrays.asList());
+        // ConfigurationSection sec = cratesConfig.config.getConfigurationSection(crateName + ".items.My Item");
+        // sec.set("weight", 50);
+        // sec.set("display-item", player.getInventory().getItemInMainHand());
+        // sec.set("item", "...");
+        // sec.set("command", "say hello");
+        // sec.set("commands", Arrays.asList("say hello", "msg <player> hello"));
         
         cratesConfig.save();
 

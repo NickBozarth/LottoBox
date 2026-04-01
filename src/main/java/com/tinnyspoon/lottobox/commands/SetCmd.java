@@ -34,12 +34,12 @@ public class SetCmd implements CommandExecutor {
         if (crateName == null) return false;
 
         if (!cratesConfig.config.contains(crateName)) {
-            player.sendMessage("Crate [" + crateName + "] does not exist");
+            player.sendMessage("Crate [" + crateName + "§r] does not exist");
             return true;
         }
 
         PersistentData.setPlayerString(player, "setting-crate", crateName);
-        player.sendMessage("Setting crate [" + crateName + "]");
+        player.sendMessage("Setting crate [" + crateName + "§r]");
         return true;
     }
     

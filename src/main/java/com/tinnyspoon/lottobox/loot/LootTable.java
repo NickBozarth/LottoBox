@@ -2,6 +2,8 @@ package com.tinnyspoon.lottobox.loot;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
@@ -29,22 +31,23 @@ public class LootTable {
         LootTable table = new LootTable();
         table.crateName = crateName;
 
-        Bukkit.broadcastMessage("Getting crate [" + crateName + "]");
-        ConfigurationSection thisSection = LootTable.cratesConfig.config.getConfigurationSection(crateName);
-        if (thisSection == null) {
-            Bukkit.getLogger().log(Level.SEVERE, "CRATE [" + crateName + "] does not exist");
+        Bukkit.broadcastMessage("Getting crate [" + crateName + "§r]");
+        ConfigurationSection crateSection = LootTable.cratesConfig.config.getConfigurationSection(crateName);
+        if (crateSection == null) {
+            Bukkit.getLogger().log(Level.SEVERE, "CRATE [" + crateName + "§r] DOES NOT EXIST");
             return null;
         }
 
-        String keyMaterialString = thisSection.getString("key-material", "TRIPWIRE_HOOK");
+        String keyMaterialString = crateSection.getString("key-material", "TRIPWIRE_HOOK");
         try {
             table.keyMaterial = Material.valueOf(keyMaterialString);
         } catch (Exception e) {
             table.keyMaterial = Material.TRIPWIRE_HOOK;
         }
 
-        for(String itemDisplayName : thisSection.getConfigurationSection("items").getKeys(false)) {
-            LootItem item = LootItem.loadItem(crateName, itemDisplayName);
+        List<Map<?, ?>> items = crateSection.getMapList("items");
+        for(Map<?, ?> itemMap : items) {
+            LootItem item = LootItem.loadItem(crateName, itemMap);
             if (item == null) continue;
             table.lootItems.add(item);
         }
@@ -81,6 +84,11 @@ public class LootTable {
 
         if (this.weights.size() == 0) {
             Bukkit.getLogger().log(Level.SEVERE, "Loot pool for crate [" + this.crateName + "] cannot be empty");
+            return new ArrayList<>();
+        }
+
+        if (totalWeight == 0) {
+            Bukkit.getLogger().log(Level.SEVERE, "Loot pool for crate [" + this.crateName + "] has a total weight of 0");
             return new ArrayList<>();
         }
 

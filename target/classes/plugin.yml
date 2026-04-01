@@ -12,5 +12,5 @@ commands:
   lbgive:
   lbrefresh:
   lbdelete:
-
+  lblist:
   lbadditem:

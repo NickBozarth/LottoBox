@@ -20,6 +20,7 @@ public class Configs {
         Configs.locationsConfig = new Config(dataFolder, "locations.yml");
     }
 
+    // TODO does not work
     public static void refresh() {
         Configs.loadDataFolder(dataFolder);
     }

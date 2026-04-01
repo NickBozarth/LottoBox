@@ -3,6 +3,7 @@ package com.tinnyspoon.lottobox.loot;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -21,35 +22,76 @@ import com.tinnyspoon.lottobox.utils.Configs;
 public class LootItem {
 
 
-    private ConfigurationSection itemSection;
-    public String itemName;
+    public @NotNull String itemName;
     public @NotNull ItemStack displayItem;
-    public @NotNull int weight;
-    public static Config cratesConfig = Configs.cratesConfig;
+    public int weight;
+    public @NotNull List<ItemStack> winItems = new ArrayList<>();
+    public @NotNull List<String> winCommands = new ArrayList<>();
 
-    public static @Nullable LootItem loadItem(String crateName, String itemName) {
+    public static @Nullable LootItem loadItem(String crateName, Map<?, ?> itemMap) {
         LootItem item = new LootItem();
-        item.itemName = itemName;
-
         
+        
+        Object itemNameObject = itemMap.get("name");
+        if (itemNameObject != null && itemNameObject instanceof String itemName) {
+            item.itemName = itemName;
+        } else {
+            item.itemName = "Item name not found";
+        }
 
-        item.itemSection = LootItem.cratesConfig.config.getConfigurationSection(crateName + ".items." + itemName);
-        if (item.itemSection == null) {
-            Bukkit.getLogger().log(Level.SEVERE, "Failed to fetch crates.yml [" + crateName + ".items." + itemName + "]");
+        Object displayItemObject = itemMap.get("display-item");
+        if (displayItemObject == null || !(displayItemObject instanceof ItemStack displayItem)) {
+            Bukkit.getLogger().log(Level.SEVERE, "Failed to retrieve [" + crateName + "] [" + item.itemName + "].display-item");
+            return null;
+        }
+        item.displayItem = displayItem;
 
-            for (String key : LootItem.cratesConfig.config.getKeys(true)) {
-                Bukkit.getLogger().log(Level.SEVERE, key);
-            }
+        Object weightObject = itemMap.get("weight");
+        if (weightObject == null || !(weightObject instanceof Integer weight)) {
+            Bukkit.getLogger().log(Level.SEVERE, "Failed to retrieve [" + crateName + "] [" + item.itemName + "].weight");
+            return null;
+        }
+        item.weight = weight;
 
+        Object winObject = itemMap.get("win");
+        if (winObject == null || !(winObject instanceof Map<?, ?> winMap)) {
+            Bukkit.getLogger().log(Level.SEVERE, "Failed to retrieve [" + crateName + "] [" + item.itemName + "].win");
             return null;
         }
 
+        Object winItemsObject = winMap.get("items");
+        if (winItemsObject == null || !(winItemsObject instanceof List<?> winItems)) {
+            Bukkit.getLogger().log(Level.SEVERE, "Failed to retrieve [" + crateName + "] [" + item.itemName + "].win.items");
+            return null;
+        }
 
-        item.displayItem = item.itemSection.getItemStack("display-item");
-        if (item.displayItem == null) return null;
+        for (Object winItemObject : winItems) {
+            if (winItemObject instanceof ItemStack winItem) {
+                item.winItems.add(winItem);
+            } 
+            else if (winItemObject instanceof String winItemString && winItemString.equals("display-item")) {
+                item.winItems.add(displayItem);
+            } 
+            else {
+                Bukkit.getLogger().log(Level.SEVERE, "[" + crateName + "] contains win item that is unable to be loaded");
+            }
+        }
 
-        item.weight = item.itemSection.getInt("weight", 0);
+        Object winCommandsObject = winMap.get("commands");
+        if (winCommandsObject == null || !(winCommandsObject instanceof List<?> winCommands)) {
+            Bukkit.getLogger().log(Level.SEVERE, "Failed to retrieve [" + crateName + "] [" + item.itemName + "].win.items");
+            return null;
+        }
 
+        for (Object winCommandObject : winCommands) {
+            if (winCommandObject instanceof String winCommand) {
+                item.winCommands.add(winCommand);
+            } 
+            else {
+                Bukkit.getLogger().log(Level.SEVERE, "[" + crateName + "] contains win command that is unable to be loaded");
+            }
+        }
+        
 
 
         return item;
@@ -57,31 +99,10 @@ public class LootItem {
 
 
     private void winItem(Player player) {
-        String itemString = this.itemSection.getString("item.name");
-        if (itemString == null) return;
-        int itemQuantity = this.itemSection.getInt("item.quantity", 1);
-
-        try {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "give " + player.getName() + " " + itemString + " " + itemQuantity);
-        } catch (IllegalArgumentException e) {
-            Bukkit.getLogger().log(Level.SEVERE, "Failed to create item [" + itemString + "]");
-        }
     }
 
 
     private void winCommands(Player player) {
-        ArrayList<String> commands = new ArrayList<>();
-        
-        String commandString = this.itemSection.getString("command");
-        if (commandString != null) commands.add(commandString);
-
-        List<String> commandsList = this.itemSection.getStringList("commands");
-        if (commandsList != null) commands.addAll(commandsList);
-
-        for (String command: commands) {
-            Bukkit.broadcastMessage("Executing command [" + command + "]");
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-        }
     }
 
 
