@@ -37,14 +37,14 @@ public class New implements CommandExecutor {
         }
 
 
-        if (cratesConfig.config.contains(crateName)) {
+        if (cratesConfig.config.contains("Crates." + crateName)) {
             sender.sendMessage("Crate [" + crateName + "§r] already exists.");
             return true;
         }
 
         // String configSectionName = ;
-        cratesConfig.config.set(crateName + ".key-material", "TRIPWIRE_HOOK");
-        cratesConfig.config.set(crateName + ".items", Arrays.asList());
+        cratesConfig.config.set("Crates." + crateName + ".key-material", "TRIPWIRE_HOOK");
+        cratesConfig.config.set("Crates." + crateName + ".items", Arrays.asList());
         // ConfigurationSection sec = cratesConfig.config.getConfigurationSection(crateName + ".items.My Item");
         // sec.set("weight", 50);
         // sec.set("display-item", player.getInventory().getItemInMainHand());

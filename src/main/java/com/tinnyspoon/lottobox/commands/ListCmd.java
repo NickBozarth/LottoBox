@@ -12,7 +12,7 @@ public class ListCmd implements CommandExecutor {
     
     @Override 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Set<String> crateNames = Configs.cratesConfig.config.getKeys(false);
+        Set<String> crateNames = Configs.cratesConfig.config.getConfigurationSection("Crates").getKeys(false);
         sender.sendMessage("Server currently has " + crateNames.size() + " crates");
 
         int i = 0;

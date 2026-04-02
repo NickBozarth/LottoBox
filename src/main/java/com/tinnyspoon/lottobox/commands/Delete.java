@@ -17,14 +17,14 @@ public class Delete implements CommandExecutor {
 
         String crateName = args[0];
         Config cratesConfig = Configs.cratesConfig;
-        if (!cratesConfig.config.contains(crateName)) {
-            sender.sendMessage("Crate [" + crateName + "] does not exist");
+        if (!cratesConfig.config.contains("Crates." + crateName)) {
+            sender.sendMessage("Crate [" + crateName + "§r] does not exist");
             return true;
         }
 
-        cratesConfig.config.set(crateName, null);
+        cratesConfig.config.set("Crates." + crateName, null);
         cratesConfig.save();
-        sender.sendMessage("Deleted crate [" + crateName + "]");
+        sender.sendMessage("Deleted crate [" + crateName + "§r]");
 
         return true;
     }

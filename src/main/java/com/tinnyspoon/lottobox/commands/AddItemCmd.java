@@ -29,7 +29,7 @@ public class AddItemCmd implements CommandExecutor {
         String crateName = ParseName.parseCrateName(args);
         if (crateName == null) return false;
 
-        ConfigurationSection crateSec = Configs.cratesConfig.config.getConfigurationSection(crateName);
+        ConfigurationSection crateSec = Configs.cratesConfig.config.getConfigurationSection("Crates." + crateName);
         if (crateSec == null) {
             sender.sendMessage("Cannot find crate with name [" + crateName + "§r]");
             return true;
@@ -47,7 +47,7 @@ public class AddItemCmd implements CommandExecutor {
         Map<String, Object> newItem = new HashMap<>();
         newItem.put("name", itemName);
         newItem.put("display-item", itemInHand);
-        newItem.put("weight", 0);
+        newItem.put("weight", 1);
         Map<String, Object> winSection = new HashMap<>();
         winSection.put("items", Arrays.asList("display-item"));
         winSection.put("commands", Arrays.asList());

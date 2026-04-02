@@ -2,6 +2,7 @@ package com.tinnyspoon.lottobox.utils;
 
 import java.io.File;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -12,7 +13,6 @@ public class Configs {
     
     private static File dataFolder;
 
-
     public static void loadDataFolder(File dataFolder) {
         Configs.dataFolder = dataFolder;
 
@@ -21,7 +21,8 @@ public class Configs {
     }
 
     // TODO does not work
-    public static void refresh() {
-        Configs.loadDataFolder(dataFolder);
+    public static void refresh(CommandSender sender) {
+        cratesConfig.refresh(sender);
+        locationsConfig.refresh(sender);
     }
 }

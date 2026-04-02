@@ -18,7 +18,7 @@ public class BlockBreak implements Listener {
         if (crateName != null) {
             Configs.locationsConfig.config.set(locString, null);
             Configs.locationsConfig.save();
-            event.getPlayer().sendMessage("Broke crate [" + crateName + "]");
+            event.getPlayer().sendMessage("Broke crate [" + crateName + "§r]");
         }
     }
 }

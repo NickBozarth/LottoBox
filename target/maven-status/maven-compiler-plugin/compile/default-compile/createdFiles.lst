@@ -11,9 +11,11 @@ com\tinnyspoon\lottobox\utils\Configs.class
 com\tinnyspoon\lottobox\commands\SetCmd.class
 com\tinnyspoon\lottobox\handler\InvOpen.class
 com\tinnyspoon\lottobox\commands\ListCmd.class
+com\tinnyspoon\lottobox\handler\InvOpen$1.class
 com\tinnyspoon\lottobox\commands\AddItemCmd.class
 com\tinnyspoon\lottobox\handler\BlockBreak.class
 com\tinnyspoon\lottobox\commands\DisplayCmd.class
 com\tinnyspoon\lottobox\handler\BlockPlace.class
+com\tinnyspoon\lottobox\handler\InvOpen$2.class
 com\tinnyspoon\lottobox\loot\LootItem.class
 com\tinnyspoon\lottobox\LottoBox.class

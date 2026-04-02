@@ -33,7 +33,7 @@ public class SetCmd implements CommandExecutor {
         String crateName = ParseName.parseCrateName(args);
         if (crateName == null) return false;
 
-        if (!cratesConfig.config.contains(crateName)) {
+        if (!cratesConfig.config.contains("Crates." + crateName)) {
             player.sendMessage("Crate [" + crateName + "§r] does not exist");
             return true;
         }

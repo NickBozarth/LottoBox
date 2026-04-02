@@ -32,7 +32,7 @@ public class GiveCmd implements CommandExecutor {
         }
         String crateName = getCrateName(args);
         if (!isValidCrate(crateName)) {
-            sender.sendMessage("Failed to find crate [" + crateName + "]");
+            sender.sendMessage("Failed to find crate [" + crateName + "§r]");
             return true;
         }
         Integer amount = getAmount(args);
@@ -56,7 +56,7 @@ public class GiveCmd implements CommandExecutor {
 
     private boolean isValidCrate(String crateName) {
         if (crateName == null) return false;
-        return Configs.cratesConfig.config.contains(crateName);
+        return Configs.cratesConfig.config.contains("Crates." + crateName);
     }
 
     private Integer getAmount(String[] args) {
@@ -70,7 +70,7 @@ public class GiveCmd implements CommandExecutor {
     }
 
     private ItemStack genKeyStack(String crateName, int amount) {
-        String keyMaterialString = Configs.cratesConfig.config.getString(crateName + ".key-material", "TRIPWIRE_HOOK");
+        String keyMaterialString = Configs.cratesConfig.config.getString("Crates." + crateName + ".key-material", "TRIPWIRE_HOOK");
         Material keyMaterial;
         try {
             keyMaterial = Material.valueOf(keyMaterialString);

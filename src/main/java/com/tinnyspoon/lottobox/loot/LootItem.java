@@ -27,6 +27,7 @@ public class LootItem {
     public int weight;
     public @NotNull List<ItemStack> winItems = new ArrayList<>();
     public @NotNull List<String> winCommands = new ArrayList<>();
+    private boolean disableWinMessage;
 
     public static @Nullable LootItem loadItem(String crateName, Map<?, ?> itemMap) {
         LootItem item = new LootItem();
@@ -91,6 +92,8 @@ public class LootItem {
                 Bukkit.getLogger().log(Level.SEVERE, "[" + crateName + "] contains win command that is unable to be loaded");
             }
         }
+
+        item.disableWinMessage = itemMap.containsKey("disable-win-message");
         
 
 
@@ -99,15 +102,24 @@ public class LootItem {
 
 
     private void winItem(Player player) {
+        for (ItemStack item : this.winItems) {
+            player.getInventory().addItem(item);
+        }
     }
 
 
     private void winCommands(Player player) {
+        for (String command : this.winCommands) {
+            command = command.replace("<player>", player.getName());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
     }
 
 
 
     public void win(Player player) {
+        if (!this.disableWinMessage) player.sendMessage("You won [" + this.itemName + "]");
+
         winItem(player);
         winCommands(player);
     }

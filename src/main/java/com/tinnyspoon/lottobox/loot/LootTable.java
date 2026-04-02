@@ -32,7 +32,7 @@ public class LootTable {
         table.crateName = crateName;
 
         Bukkit.broadcastMessage("Getting crate [" + crateName + "§r]");
-        ConfigurationSection crateSection = LootTable.cratesConfig.config.getConfigurationSection(crateName);
+        ConfigurationSection crateSection = LootTable.cratesConfig.config.getConfigurationSection("Crates." + crateName);
         if (crateSection == null) {
             Bukkit.getLogger().log(Level.SEVERE, "CRATE [" + crateName + "§r] DOES NOT EXIST");
             return null;
@@ -79,7 +79,7 @@ public class LootTable {
     }
 
 
-    public ArrayList<LootItem> genLootPool() {
+    public ArrayList<LootItem> genLootPool(int itemAmount) {
         int totalWeight = this.getTotalWeight();
 
         if (this.weights.size() == 0) {
@@ -95,7 +95,7 @@ public class LootTable {
 
         ArrayList<LootItem> lootPool = new ArrayList<>(); 
         
-        for (int i = 0; i < 27; i++) {
+        for (int i = 0; i < itemAmount; i++) {
             lootPool.add(this.genItem(totalWeight));
         }
 

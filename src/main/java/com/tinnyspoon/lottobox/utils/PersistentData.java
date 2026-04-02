@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 public class PersistentData {
-    private static JavaPlugin plugin;
+    public static JavaPlugin plugin;
 
     public static void setPlugin(JavaPlugin plugin) {
         PersistentData.plugin = plugin;

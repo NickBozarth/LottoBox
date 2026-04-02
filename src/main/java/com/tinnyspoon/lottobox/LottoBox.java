@@ -11,6 +11,7 @@ import com.tinnyspoon.lottobox.commands.DisplayCmd;
 import com.tinnyspoon.lottobox.commands.GiveCmd;
 import com.tinnyspoon.lottobox.commands.ListCmd;
 import com.tinnyspoon.lottobox.commands.New;
+import com.tinnyspoon.lottobox.commands.RefreshCmd;
 import com.tinnyspoon.lottobox.commands.SetCmd;
 import com.tinnyspoon.lottobox.handler.BlockBreak;
 import com.tinnyspoon.lottobox.handler.BlockPlace;
@@ -35,6 +36,7 @@ public class LottoBox extends JavaPlugin {
         this.registerCommand("lbdelete", new Delete());
         this.registerCommand("lblist", new ListCmd());
         this.registerCommand("lbadditem", new AddItemCmd());
+        this.registerCommand("lbrefresh", new RefreshCmd());
 
         this.getServer().getPluginManager().registerEvents(new InvOpen(), this);
         this.getServer().getPluginManager().registerEvents(new BlockPlace(), this);
