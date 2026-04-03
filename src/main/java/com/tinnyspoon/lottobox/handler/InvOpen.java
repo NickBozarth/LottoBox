@@ -138,7 +138,10 @@ public class InvOpen implements Listener {
         key.setAmount(key.getAmount() - 1);
 
         LootTable lootTable = LootTable.fromName(crateName);
-        if (lootTable == null) return;
+        if (lootTable == null) {
+            Bukkit.getLogger().log(Level.WARNING, "Crate [" + crateName + "] does not exist");
+            return;
+        }
         
         ArrayList<LootItem> lootPool = lootTable.genLootPool(150);
 

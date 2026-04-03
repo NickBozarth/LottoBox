@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,7 +38,7 @@ public class AddItemCmd implements CommandExecutor {
 
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         ItemMeta itemInHandMeta = itemInHand.getItemMeta();
-        if (itemInHandMeta == null) {
+        if (itemInHandMeta == null || itemInHand.getType() == Material.AIR) {
             sender.sendMessage("You must be holding an item to add it to the loot pool");
             return true;
         }

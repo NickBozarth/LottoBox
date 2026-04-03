@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import com.tinnyspoon.lottobox.commands.AddItemCmd;
 import com.tinnyspoon.lottobox.commands.Delete;
 import com.tinnyspoon.lottobox.commands.DisplayCmd;
+import com.tinnyspoon.lottobox.commands.EditCmd;
 import com.tinnyspoon.lottobox.commands.GiveCmd;
 import com.tinnyspoon.lottobox.commands.ListCmd;
 import com.tinnyspoon.lottobox.commands.New;
@@ -37,6 +38,8 @@ public class LottoBox extends JavaPlugin {
         this.registerCommand("lblist", new ListCmd());
         this.registerCommand("lbadditem", new AddItemCmd());
         this.registerCommand("lbrefresh", new RefreshCmd());
+        this.registerCommand("lbedit", new EditCmd());
+        
 
         this.getServer().getPluginManager().registerEvents(new InvOpen(), this);
         this.getServer().getPluginManager().registerEvents(new BlockPlace(), this);

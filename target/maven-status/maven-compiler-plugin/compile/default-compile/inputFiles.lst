@@ -1,6 +1,7 @@
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\commands\AddItemCmd.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\commands\Delete.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\commands\DisplayCmd.java
+Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\commands\EditCmd.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\commands\GiveCmd.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\commands\ListCmd.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\commands\New.java
@@ -15,5 +16,6 @@ Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\loot\LootTable.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\LottoBox.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\utils\Config.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\utils\Configs.java
+Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\utils\ItemCreator.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\utils\ParseName.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\utils\PersistentData.java

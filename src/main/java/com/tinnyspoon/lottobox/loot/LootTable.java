@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -13,6 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,6 +24,8 @@ import com.tinnyspoon.lottobox.utils.Config;
 import com.tinnyspoon.lottobox.utils.Configs;
 
 public class LootTable {
+
+    private LootTable() {}
 
     private @NotNull Material keyMaterial;
     private ArrayList<LootItem> lootItems = new ArrayList<>();
@@ -31,10 +37,8 @@ public class LootTable {
         LootTable table = new LootTable();
         table.crateName = crateName;
 
-        Bukkit.broadcastMessage("Getting crate [" + crateName + "§r]");
         ConfigurationSection crateSection = LootTable.cratesConfig.config.getConfigurationSection("Crates." + crateName);
         if (crateSection == null) {
-            Bukkit.getLogger().log(Level.SEVERE, "CRATE [" + crateName + "§r] DOES NOT EXIST");
             return null;
         }
 
@@ -46,17 +50,19 @@ public class LootTable {
         }
 
         List<Map<?, ?>> items = crateSection.getMapList("items");
+        int i = 0;
         for(Map<?, ?> itemMap : items) {
-            LootItem item = LootItem.loadItem(crateName, itemMap);
+            LootItem item = LootItem.loadItemFromMap(crateName, itemMap, i);
             if (item == null) continue;
             table.lootItems.add(item);
+            i++;
         }
 
         return table;
     }
 
 
-    private int getTotalWeight() {
+    public int getTotalWeight() {
         int totalWeight = 0;
 
         for (LootItem item : this.lootItems) {
@@ -100,5 +106,14 @@ public class LootTable {
         }
 
         return lootPool;
+    }
+
+    public List<ItemStack> getEditItems() {
+        int totalWeight = getTotalWeight();
+        return this.lootItems.stream().map(item -> item.getEditItem(totalWeight)).toList();
+    }
+
+    public @Nullable LootItem getLootItem(int index) {
+        return this.lootItems.get(index);
     }
 }
