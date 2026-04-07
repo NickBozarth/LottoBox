@@ -4,9 +4,11 @@ com\tinnyspoon\lottobox\inventories\EditItemInv.class
 com\tinnyspoon\lottobox\utils\Config.class
 com\tinnyspoon\lottobox\commands\RefreshCmd.class
 com\tinnyspoon\lottobox\utils\Configs.class
+com\tinnyspoon\lottobox\handler\AnvilPrepare.class
 com\tinnyspoon\lottobox\commands\ListCmd.class
 com\tinnyspoon\lottobox\commands\AddItemCmd.class
 com\tinnyspoon\lottobox\handler\BlockBreak.class
+com\tinnyspoon\lottobox\inventories\AddCommandInv.class
 com\tinnyspoon\lottobox\inventories\EditInv.class
 com\tinnyspoon\lottobox\handler\InvOpen$2.class
 com\tinnyspoon\lottobox\loot\LootItem.class

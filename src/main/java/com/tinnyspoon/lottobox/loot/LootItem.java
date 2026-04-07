@@ -216,7 +216,6 @@ public class LootItem {
             .map(item -> { 
                 PersistentData.setItemString(item, "type", "Item"); 
                 PersistentData.setItemData(item, "index", index.getAndIncrement(), PersistentDataType.INTEGER);         
-                ItemCreator.addLore(item, Arrays.asList(LootItem.separator, "Click to edit", LootItem.separator));
                 return item; 
             })
             .toList();

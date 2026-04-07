@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionType;
 
+import com.tinnyspoon.lottobox.inventories.AddCommandInv;
 import com.tinnyspoon.lottobox.inventories.AddItemInv;
 import com.tinnyspoon.lottobox.inventories.DeleteAreYouSureInv;
 import com.tinnyspoon.lottobox.inventories.EditInv;
@@ -49,8 +50,22 @@ public class InvClick implements Listener {
             return;
         }
 
-        else if (title.equals("Add Item to Loot Pool")) {
+
+
+
+        ItemStack firstItem = event.getInventory().getItem(0);
+        if (firstItem == null) return;
+        String addingTo = PersistentData.getItemString(firstItem, "adding-to");
+        if (addingTo == null) return;
+
+        
+        if (addingTo.equals("item")) {
             AddItemInv.onClick(event);
+            return;
+        }
+
+        else if (addingTo.equals("command")) {
+            AddCommandInv.onClick(event);
             return;
         }
     }

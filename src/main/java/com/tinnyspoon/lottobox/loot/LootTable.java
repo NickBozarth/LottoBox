@@ -134,5 +134,6 @@ public class LootTable {
         }
         Configs.cratesConfig.config.set("Crates." + this.crateName + ".items", items);
         Configs.cratesConfig.save();
+        Configs.refresh(Bukkit.getConsoleSender());
     }
 }

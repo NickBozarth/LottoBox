@@ -94,7 +94,7 @@ public class EditItemInv {
         }
 
         if (isAddItem(clickedItem)) {
-            Bukkit.broadcastMessage(handleAdd(inv, player, clickedItem));
+            handleAdd(inv, player, clickedItem);
             return;
         }
 
@@ -117,18 +117,21 @@ public class EditItemInv {
         return item.getType() == Material.LIME_DYE;
     }
 
-    private static String handleAdd(Inventory inv, Player player, ItemStack selectedItem) {
+    private static void handleAdd(Inventory inv, Player player, ItemStack selectedItem) {
         String type = PersistentData.getItemString(selectedItem, "type");
         ItemStack editItem = inv.getItem(13);
 
-        if (type == null) return "null";
+        if (type == null) return;
         if (type.equals("Item")) {
             AddItemInv.openInv(player, editItem);
-            return "Anvil";
+            return;
+        }
+        if (type.equals("Command")) {
+            AddCommandInv.openInv(player, editItem);
+            return;
         }
 
-        return "else";
-        // if (type.equals("item")) AddItemInv.openInv(player, selectedItem);
+        return;
     }
 
 
@@ -285,7 +288,6 @@ public class EditItemInv {
             .limit(5)
             .map(command -> {
                 ItemStack commandItem = ItemCreator.itemStackWithName(Material.SPRUCE_SIGN, "/" + command);
-                ItemCreator.setLore(commandItem, Arrays.asList(LootItem.separator, "Click to edit command", LootItem.separator));
                 PersistentData.setItemString(commandItem, "type", "Command");
                 PersistentData.setItemData(commandItem, "index", commandIndex.getAndIncrement(), PersistentDataType.INTEGER);         
                 return commandItem;

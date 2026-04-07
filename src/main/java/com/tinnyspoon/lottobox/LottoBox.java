@@ -15,6 +15,7 @@ import com.tinnyspoon.lottobox.commands.ListCmd;
 import com.tinnyspoon.lottobox.commands.New;
 import com.tinnyspoon.lottobox.commands.RefreshCmd;
 import com.tinnyspoon.lottobox.commands.SetCmd;
+import com.tinnyspoon.lottobox.handler.AnvilPrepare;
 import com.tinnyspoon.lottobox.handler.BlockBreak;
 import com.tinnyspoon.lottobox.handler.BlockPlace;
 import com.tinnyspoon.lottobox.handler.InvClick;
@@ -46,6 +47,7 @@ public class LottoBox extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new BlockPlace(), this);
         this.getServer().getPluginManager().registerEvents(new BlockBreak(), this);
         this.getServer().getPluginManager().registerEvents(new InvClick(), this);
+        this.getServer().getPluginManager().registerEvents(new AnvilPrepare(), this);
     }
 
 

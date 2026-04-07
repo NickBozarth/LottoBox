@@ -46,7 +46,7 @@ public class InvOpen implements Listener {
 
     @EventHandler
     public void onInventoryOpen(@NotNull InventoryOpenEvent event) {
-        if (!(event.getPlayer() instanceof @SuppressWarnings("unused") Player player)) {
+        if (!(event.getPlayer() instanceof Player player)) {
             return;
         }
 
