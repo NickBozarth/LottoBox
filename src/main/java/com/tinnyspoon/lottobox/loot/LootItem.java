@@ -3,6 +3,7 @@ package com.tinnyspoon.lottobox.loot;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -219,5 +220,21 @@ public class LootItem {
                 return item; 
             })
             .toList();
+    }
+
+    public Map<?, ?> getAsMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", this.itemName);
+        map.put("weight", this.weight);
+
+        Map<String, Object> winMap = new HashMap<>();
+        winMap.put("items", this.winItems);
+        winMap.put("commands", this.winCommands);
+
+        map.put("win", winMap);
+
+        map.put("display-item", this.displayItem);
+
+        return map;
     }
 }

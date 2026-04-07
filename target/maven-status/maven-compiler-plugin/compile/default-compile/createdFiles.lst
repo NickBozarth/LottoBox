@@ -10,11 +10,13 @@ com\tinnyspoon\lottobox\handler\BlockBreak.class
 com\tinnyspoon\lottobox\inventories\EditInv.class
 com\tinnyspoon\lottobox\handler\InvOpen$2.class
 com\tinnyspoon\lottobox\loot\LootItem.class
+com\tinnyspoon\lottobox\handler\EventHandler.class
 com\tinnyspoon\lottobox\loot\LootTable.class
 com\tinnyspoon\lottobox\handler\InvClick.class
 com\tinnyspoon\lottobox\commands\GiveCmd.class
 com\tinnyspoon\lottobox\utils\ItemCreator.class
 com\tinnyspoon\lottobox\commands\Delete.class
+com\tinnyspoon\lottobox\inventories\AddItemInv.class
 com\tinnyspoon\lottobox\utils\ParseName.class
 com\tinnyspoon\lottobox\inventories\DeleteAreYouSureInv.class
 com\tinnyspoon\lottobox\commands\SetCmd.class

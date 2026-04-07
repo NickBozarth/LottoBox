@@ -123,4 +123,16 @@ public class LootTable {
     public @Nullable LootItem getLootItem(int index) {
         return this.lootItems.get(index);
     }
+
+    public void updateLootItemInConfig(LootItem item) {
+        List<Map<?, ?>> items = Configs.cratesConfig.config.getMapList("Crates." + this.crateName + ".items");
+        try {
+            items.set(item.index, item.getAsMap());
+        } catch (Exception e) {
+            Bukkit.broadcastMessage("CRATE NAME " + e.getMessage());
+            Bukkit.broadcastMessage("Crates." + this.crateName + ".items");
+        }
+        Configs.cratesConfig.config.set("Crates." + this.crateName + ".items", items);
+        Configs.cratesConfig.save();
+    }
 }

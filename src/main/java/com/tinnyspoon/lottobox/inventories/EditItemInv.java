@@ -93,6 +93,11 @@ public class EditItemInv {
             return;
         }
 
+        if (isAddItem(clickedItem)) {
+            Bukkit.broadcastMessage(handleAdd(inv, player, clickedItem));
+            return;
+        }
+
 
         ItemStack firstItem = inv.getItem(0);
         if (firstItem != null && firstItem.getType() == Material.RED_STAINED_GLASS_PANE) {            
@@ -105,6 +110,25 @@ public class EditItemInv {
     private static void handleDeleteItem(Inventory inv, String deleteItemName) {
         replaceItemsInInv(inv, Material.BLACK_STAINED_GLASS_PANE, Material.RED_STAINED_GLASS_PANE, deleteItemName);
         return;
+    }
+
+
+    private static boolean isAddItem(ItemStack item) {
+        return item.getType() == Material.LIME_DYE;
+    }
+
+    private static String handleAdd(Inventory inv, Player player, ItemStack selectedItem) {
+        String type = PersistentData.getItemString(selectedItem, "type");
+        ItemStack editItem = inv.getItem(13);
+
+        if (type == null) return "null";
+        if (type.equals("Item")) {
+            AddItemInv.openInv(player, editItem);
+            return "Anvil";
+        }
+
+        return "else";
+        // if (type.equals("item")) AddItemInv.openInv(player, selectedItem);
     }
 
 

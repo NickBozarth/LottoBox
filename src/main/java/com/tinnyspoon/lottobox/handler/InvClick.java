@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionType;
 
+import com.tinnyspoon.lottobox.inventories.AddItemInv;
 import com.tinnyspoon.lottobox.inventories.DeleteAreYouSureInv;
 import com.tinnyspoon.lottobox.inventories.EditInv;
 import com.tinnyspoon.lottobox.inventories.EditItemInv;
@@ -45,6 +46,12 @@ public class InvClick implements Listener {
 
         else if (title.equals("Are you sure")) {
             DeleteAreYouSureInv.onClick(event);
+            return;
+        }
+
+        else if (title.equals("Add Item to Loot Pool")) {
+            AddItemInv.onClick(event);
+            return;
         }
     }
 }

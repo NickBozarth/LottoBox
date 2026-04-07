@@ -9,8 +9,10 @@ Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\commands\RefreshCmd.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\commands\SetCmd.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\handler\BlockBreak.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\handler\BlockPlace.java
+Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\handler\EventHandler.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\handler\InvClick.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\handler\InvOpen.java
+Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\inventories\AddItemInv.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\inventories\DeleteAreYouSureInv.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\inventories\EditInv.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\inventories\EditItemInv.java
