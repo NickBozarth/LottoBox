@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.tinnyspoon.lottobox.inventories.EditInv;
 import com.tinnyspoon.lottobox.loot.LootItem;
 import com.tinnyspoon.lottobox.loot.LootTable;
 import com.tinnyspoon.lottobox.utils.Configs;
@@ -29,21 +30,7 @@ public class EditCmd implements CommandExecutor {
         String crateName = ParseName.parseCrateName(args);
         if (crateName == null) return false;
 
-        // create inv
-        Inventory inv = Bukkit.createInventory(player, 54, "Edit " + crateName);
-
-        // populate w/ crate's loot pool
-        LootTable crateLootTable = LootTable.fromName(crateName);
-        if (crateLootTable == null) {
-            sender.sendMessage("Crate [" + crateName + "] does not exist");
-            return true;
-        }
-        ItemStack displayItems[] = crateLootTable.getEditItems().toArray(ItemStack[]::new);
-        inv.setContents(displayItems); 
-
-        // open inv on player
-        player.openInventory(inv);
-
+        EditInv.openInv(player, crateName);
         return true;
     }
 }

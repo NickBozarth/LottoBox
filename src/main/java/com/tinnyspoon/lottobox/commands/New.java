@@ -45,12 +45,6 @@ public class New implements CommandExecutor {
         // String configSectionName = ;
         cratesConfig.config.set("Crates." + crateName + ".key-material", "TRIPWIRE_HOOK");
         cratesConfig.config.set("Crates." + crateName + ".items", Arrays.asList());
-        // ConfigurationSection sec = cratesConfig.config.getConfigurationSection(crateName + ".items.My Item");
-        // sec.set("weight", 50);
-        // sec.set("display-item", player.getInventory().getItemInMainHand());
-        // sec.set("item", "...");
-        // sec.set("command", "say hello");
-        // sec.set("commands", Arrays.asList("say hello", "msg <player> hello"));
         
         cratesConfig.save();
 

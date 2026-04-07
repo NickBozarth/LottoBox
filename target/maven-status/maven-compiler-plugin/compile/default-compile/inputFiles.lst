@@ -11,6 +11,9 @@ Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\handler\BlockBreak.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\handler\BlockPlace.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\handler\InvClick.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\handler\InvOpen.java
+Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\inventories\DeleteAreYouSureInv.java
+Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\inventories\EditInv.java
+Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\inventories\EditItemInv.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\loot\LootItem.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\loot\LootTable.java
 Q:\code\LottoBox\src\main\java\com\tinnyspoon\lottobox\LottoBox.java

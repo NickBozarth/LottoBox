@@ -1,5 +1,6 @@
 package com.tinnyspoon.lottobox.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -14,7 +15,7 @@ public class ItemCreator {
         ItemStack item = new ItemStack(mat);
         ItemMeta itemMeta = item.getItemMeta();
         if (itemMeta == null) return item;
-        itemMeta.setItemName(displayName);
+        itemMeta.setDisplayName(displayName);
         item.setItemMeta(itemMeta);
         return item;
     }
@@ -27,6 +28,18 @@ public class ItemCreator {
         ItemMeta itemMeta = item.getItemMeta();
         if (itemMeta == null) return;
         itemMeta.setLore(lore);
+        item.setItemMeta(itemMeta);
+    }
+
+    public static void addLore(ItemStack item, List<String> lore) {
+        ItemMeta itemMeta = item.getItemMeta();
+        if (itemMeta == null) return;
+        List<String> oldLore = itemMeta.getLore();
+        if (oldLore == null) oldLore = new ArrayList<>();
+        else oldLore.add(" ");
+        oldLore.addAll(lore);
+
+        itemMeta.setLore(oldLore);
         item.setItemMeta(itemMeta);
     }
 

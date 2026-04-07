@@ -2,8 +2,10 @@ package com.tinnyspoon.lottobox.loot;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -20,11 +22,12 @@ import org.jetbrains.annotations.Nullable;
 
 import com.tinnyspoon.lottobox.utils.Config;
 import com.tinnyspoon.lottobox.utils.Configs;
+import com.tinnyspoon.lottobox.utils.ItemCreator;
 import com.tinnyspoon.lottobox.utils.ParseName;
 import com.tinnyspoon.lottobox.utils.PersistentData;
 
 public class LootItem {
-
+    public static String separator = "----------------";
 
     public @NotNull String itemName;
     public @NotNull String crateName;
@@ -149,7 +152,7 @@ public class LootItem {
         List<String> editItemLore = editItemMeta.getLore();
         if (editItemLore == null) editItemLore = new ArrayList<>();
         else editItemLore.add("");
-        editItemLore.add("----------------");
+        editItemLore.add(LootItem.separator);
 
         List<String> winItemStrings = this.winItems.stream()
             .map(item -> this.getWinItemString(item))
@@ -173,7 +176,7 @@ public class LootItem {
         }
 
         editItemLore.add("Diable Win Message: " + Boolean.toString(this.disableWinMessage));
-        editItemLore.add("----------------");
+        editItemLore.add(LootItem.separator);
         editItemMeta.setLore(editItemLore);
         editItem.setItemMeta(editItemMeta);
         PersistentData.setItemData(editItem, "item-index", this.index, PersistentDataType.INTEGER);
@@ -183,13 +186,21 @@ public class LootItem {
     }
 
     public List<ItemStack> getWinItemStacks() {
+        AtomicInteger index = new AtomicInteger();
+
         return this.winItems.stream()
             .map(item -> {
-                if (item instanceof ItemStack itemStack) return itemStack;
-                else if (item instanceof String itemString && itemString.equals("display-item")) return this.displayItem;
+                if (item instanceof ItemStack itemStack) return itemStack.clone();
+                else if (item instanceof String itemString && itemString.equals("display-item")) return this.displayItem.clone();
                 return null;
             })
             .filter(item -> item != null)
+            .map(item -> { 
+                PersistentData.setItemString(item, "type", "Item"); 
+                PersistentData.setItemData(item, "index", index.getAndIncrement(), PersistentDataType.INTEGER);         
+                ItemCreator.addLore(item, Arrays.asList(LootItem.separator, "Click to edit", LootItem.separator));
+                return item; 
+            })
             .toList();
     }
 }
