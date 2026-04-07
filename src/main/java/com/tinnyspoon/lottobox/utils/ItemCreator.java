@@ -11,11 +11,17 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionType;
 
 public class ItemCreator {
+    public static ItemStack itemWithStringData(Material mat, String displayName, String key, String value) {
+        ItemStack item = itemStackWithName(mat, displayName);
+        PersistentData.setItemString(item, key, value);
+        return item;
+    }
+
     public static ItemStack itemStackWithName(Material mat, String displayName) {
         ItemStack item = new ItemStack(mat);
         ItemMeta itemMeta = item.getItemMeta();
         if (itemMeta == null) return item;
-        itemMeta.setDisplayName(displayName);
+        itemMeta.setItemName(displayName);
         item.setItemMeta(itemMeta);
         return item;
     }

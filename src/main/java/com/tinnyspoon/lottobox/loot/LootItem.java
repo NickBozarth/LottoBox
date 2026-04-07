@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 import com.tinnyspoon.lottobox.utils.Config;
 import com.tinnyspoon.lottobox.utils.Configs;
@@ -37,6 +38,21 @@ public class LootItem {
     public @NotNull List<Object> winItems = new ArrayList<>();
     public @NotNull List<String> winCommands = new ArrayList<>();
     private boolean disableWinMessage;
+
+    public static @Nullable LootItem loadItemFromEditItem(ItemStack editItem) {
+        if (editItem == null) return null;
+
+        String crateName = PersistentData.getItemString(editItem, "crate-name");
+        Integer itemIndex = PersistentData.getItemData(editItem, "item-index", PersistentDataType.INTEGER);
+        if (crateName == null || itemIndex == null) return null;
+
+        List<Map<?, ?>> items = Configs.cratesConfig.config.getMapList("Crates." + crateName + ".items");
+        Map<?, ?> itemMap;
+        try { itemMap = items.get(itemIndex); }
+        catch (IndexOutOfBoundsException e) { return null; }
+
+        return loadItemFromMap(crateName, itemMap, itemIndex);
+    }
 
     public static @Nullable LootItem loadItemFromMap(String crateName, Map<?, ?> itemMap, int index) {
         LootItem item = new LootItem();
@@ -185,10 +201,11 @@ public class LootItem {
         return editItem;
     }
 
-    public List<ItemStack> getWinItemStacks() {
+    public List<ItemStack> getWinItemStacks(int beginOffset) {
         AtomicInteger index = new AtomicInteger();
 
         return this.winItems.stream()
+            .skip(beginOffset)
             .map(item -> {
                 if (item instanceof ItemStack itemStack) return itemStack.clone();
                 else if (item instanceof String itemString && itemString.equals("display-item")) return this.displayItem.clone();

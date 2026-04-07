@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.tinnyspoon.lottobox.utils.Config;
 import com.tinnyspoon.lottobox.utils.Configs;
+import com.tinnyspoon.lottobox.utils.PersistentData;
 
 public class LootTable {
 
@@ -32,6 +33,12 @@ public class LootTable {
     private ArrayList<Integer> weights = new ArrayList<>();
     private String crateName;
     private static Config cratesConfig = Configs.cratesConfig;
+
+    public static @Nullable LootTable fromEditItem(ItemStack editItem) {
+        String crateName = PersistentData.getItemString(editItem, "crate-name");
+        if (crateName == null) return null;
+        return LootTable.fromName(crateName);
+    }
 
     public static @Nullable LootTable fromName(String crateName) {
         LootTable table = new LootTable();

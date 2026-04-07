@@ -38,6 +38,12 @@ public class PersistentData {
         return itemMeta.getPersistentDataContainer().get(nskey, type);
     }
 
+    public static <P, C> @Nullable C getItemDataOr(ItemStack item, String key, C def, PersistentDataType<P, C> type) {
+        C data = getItemData(item, key, type);
+        if (data == null) return def;
+        else return data;
+    }
+
     public static @Nullable String getItemString(ItemStack item, String key) {
         return PersistentData.getItemData(item, key, PersistentDataType.STRING);
     }

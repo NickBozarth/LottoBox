@@ -42,63 +42,15 @@ public class EditItemInv {
         inv.setContents(fillItems);
 
         inv.setItem(13, lootItem.getEditItem(lootTable.getTotalWeight()));
-        inv.setItem(27, ItemCreator.itemStackWithName(Material.RED_DYE, "Delete Item"));
-        inv.setItem(35, ItemCreator.itemStackWithName(Material.LIME_DYE, "Add Item"));
-        inv.setItem(36, ItemCreator.itemStackWithName(Material.RED_DYE, "Delete Command"));
-        inv.setItem(44, ItemCreator.itemStackWithName(Material.LIME_DYE, "Add Command"));
+        inv.setItem(27, ItemCreator.itemWithStringData(Material.RED_DYE, "Delete Item", "type", "Item"));
+        inv.setItem(35, ItemCreator.itemWithStringData(Material.LIME_DYE, "Add Item", "type", "Item"));
+        inv.setItem(36, ItemCreator.itemWithStringData(Material.RED_DYE, "Delete Command", "type", "Command"));
+        inv.setItem(44, ItemCreator.itemWithStringData(Material.LIME_DYE, "Add Command", "type", "Command"));
         inv.setItem(49, ItemCreator.itemStackWithName(Material.BARRIER, "Go Back"));
 
-        List<ItemStack> winItems = lootItem.getWinItemStacks();
-        int lastItemIndexShown = Integer.min(5, winItems.size());
-        ItemStack nextItemArrow = ItemCreator.itemStackWithName(Material.TIPPED_ARROW, "Next Item Page");
-        ItemCreator.setArrowType(nextItemArrow, PotionType.OOZING);
-        ItemCreator.setLore(nextItemArrow, Arrays.asList("Showing items [0 - " + lastItemIndexShown + "]"));
-        ItemStack prevItemArrow = ItemCreator.itemStackWithName(Material.TIPPED_ARROW, "Previous Item Page");
-        ItemCreator.setArrowType(prevItemArrow, PotionType.HEALING);
-        ItemCreator.setLore(prevItemArrow, Arrays.asList("Showing items [0 - " + lastItemIndexShown + "]"));
-        inv.setItem(28, prevItemArrow);
-        inv.setItem(34, nextItemArrow);
-
-        if (winItems.size() == 1) inv.setItem(31, winItems.get(0));
-        else {
-            for (int i = 0; i < 5; i++) {
-                if (i >= winItems.size()) break;
-                ItemStack item = winItems.get(i);
-                inv.setItem(i + 29, item);
-            }
-        }
-
-
-        int lastCommandIndexShown = Integer.min(5, lootItem.winCommands.size());
-        ItemStack nextCommandArrow = ItemCreator.itemStackWithName(Material.TIPPED_ARROW, "Next Command Page");
-        ItemCreator.setArrowType(nextCommandArrow, PotionType.OOZING);
-        ItemCreator.setLore(nextCommandArrow, Arrays.asList("Showing items [0 - " + lastCommandIndexShown + "]"));
-        ItemStack prevCommanArrow = ItemCreator.itemStackWithName(Material.TIPPED_ARROW, "Previous Item Page");
-        ItemCreator.setArrowType(prevCommanArrow, PotionType.HEALING);
-        ItemCreator.setLore(prevCommanArrow, Arrays.asList("Showing items [0 - " + lastItemIndexShown + "]"));
-        inv.setItem(37, prevCommanArrow);
-        inv.setItem(43, nextItemArrow);
-
-        AtomicInteger commandIndex = new AtomicInteger();
-        List<ItemStack> winCommandItems = lootItem.winCommands.stream()
-            .limit(5)
-            .map(command -> {
-                ItemStack commandItem = ItemCreator.itemStackWithName(Material.SPRUCE_SIGN, "/" + command);
-                ItemCreator.setLore(commandItem, Arrays.asList(LootItem.separator, "Click to edit command", LootItem.separator));
-                PersistentData.setItemString(commandItem, "type", "Command");
-                PersistentData.setItemData(commandItem, "index", commandIndex.getAndIncrement(), PersistentDataType.INTEGER);         
-                return commandItem;
-            })
-            .toList();
-
-        if (winCommandItems.size() == 1) 
-            inv.setItem(40, winCommandItems.get(0));
-        else {
-            for (int i = 0; i < 5; i++) {
-                if (i >= lootItem.winCommands.size()) break;
-                inv.setItem(i + 38, winCommandItems.get(i));
-            }
-        }
+        EditItemInv.populateWinItems(inv, 0, lootItem);
+        EditItemInv.populateWinCommands(inv, 0, lootItem);
+        
 
 
         player.closeInventory();
@@ -122,7 +74,7 @@ public class EditItemInv {
 
 
         if (isDeleteItem(clickedItem)) {
-            handleDeleteItem(inv, itemName);
+            handleDeleteItem(inv, PersistentData.getItemString(clickedItem, "type"));
             return;
         }
 
@@ -133,6 +85,12 @@ public class EditItemInv {
 
         if (isGoBack(clickedItem)) {
             handleGoBack(player, inv);
+            return;
+        }
+
+        if (isScroll(clickedItem)) {
+            handleScroll(inv, clickedItem);
+            return;
         }
 
 
@@ -190,8 +148,32 @@ public class EditItemInv {
     }
 
 
+    private static boolean isScroll(ItemStack clickedItem) {
+        return clickedItem.getType() == Material.TIPPED_ARROW;
+    }
 
+    private static void handleScroll(Inventory inv, ItemStack clickedItem) {
+        String type = PersistentData.getItemString(clickedItem, "type");
+        Boolean next = PersistentData.getItemData(clickedItem, "next", PersistentDataType.BOOLEAN);
+        
+        if (type == null || next == null) return;
+        
+        ItemStack editItem = inv.getItem(13);
+        LootItem lootItem = LootItem.loadItemFromEditItem(editItem);
+        if (lootItem == null) return;
+        ItemStack firstItem = inv.getItem(0);
 
+        
+        if (type.equals("item")) {
+            int itemOffset = PersistentData.getItemDataOr(firstItem, "item-offset", 0, PersistentDataType.INTEGER);
+            if (next && itemOffset + 5 < lootItem.winItems.size()) populateWinItems(inv, itemOffset + 5, lootItem);
+            else if (!next && itemOffset - 5 >= 0) populateWinItems(inv, itemOffset - 5, lootItem);
+        } else if (type.equals("command")) {
+            int commandOffset = PersistentData.getItemDataOr(firstItem, "command-offset", 0, PersistentDataType.INTEGER);
+            if (next && commandOffset + 5 < lootItem.winCommands.size()) populateWinCommands(inv, commandOffset + 5, lootItem);
+            else if (!next && commandOffset - 5 >= 0) populateWinCommands(inv, commandOffset - 5, lootItem);
+        }
+    }
 
 
 
@@ -213,5 +195,86 @@ public class EditItemInv {
             }).toArray(ItemStack[]::new);
 
         inv.setContents(newItems);
+    }
+
+
+
+    private static void populateWinItems(Inventory inv, int offset, LootItem lootItem) {
+        PersistentData.setItemData(inv.getItem(0), "item-offset", offset, PersistentDataType.INTEGER);
+        
+        List<ItemStack> winItems = lootItem.getWinItemStacks(offset);
+        int lastItemIndexShown = Integer.min(5 + offset, winItems.size() + offset);
+        int offsetShown = (lootItem.winItems.size() == 0) ? 0 : offset + 1;
+        
+        ItemStack nextItemArrow = ItemCreator.itemStackWithName(Material.TIPPED_ARROW, "Next Item Page");
+        ItemCreator.setArrowType(nextItemArrow, PotionType.OOZING);
+        ItemCreator.setLore(nextItemArrow, Arrays.asList("Showing items [" + offsetShown + "-" + lastItemIndexShown + "]"));
+        PersistentData.setItemData(nextItemArrow, "next", true, PersistentDataType.BOOLEAN);
+        PersistentData.setItemString(nextItemArrow, "type", "item");
+
+        ItemStack prevItemArrow = ItemCreator.itemStackWithName(Material.TIPPED_ARROW, "Previous Item Page");
+        ItemCreator.setArrowType(prevItemArrow, PotionType.HEALING);
+        ItemCreator.setLore(prevItemArrow, Arrays.asList("Showing items [" + offsetShown + "-" + lastItemIndexShown + "]"));
+        PersistentData.setItemData(prevItemArrow, "next", false, PersistentDataType.BOOLEAN);
+        PersistentData.setItemString(prevItemArrow, "type", "item");        
+        
+        inv.setItem(28, prevItemArrow);
+        inv.setItem(34, nextItemArrow);
+        for (int i = 29; i < 34; i++) inv.setItem(i, ItemCreator.getFillItem());
+
+        if (winItems.size() == 1) inv.setItem(31, winItems.get(0));
+        else {
+            for (int i = 0; i < 5; i++) {
+                if (i >= winItems.size()) break;
+                ItemStack item = winItems.get(i);
+                inv.setItem(i + 29, item);
+            }
+        }
+    }
+
+
+    private static void populateWinCommands(Inventory inv, int offset, LootItem lootItem) {
+        PersistentData.setItemData(inv.getItem(0), "command-offset", offset, PersistentDataType.INTEGER);
+
+        int lastCommandIndexShown = Integer.min(5 + offset, lootItem.winCommands.size());
+        int offsetShown = (lootItem.winCommands.size() == 0) ? 0 : offset + 1;
+
+        ItemStack nextCommandArrow = ItemCreator.itemStackWithName(Material.TIPPED_ARROW, "Next Command Page");
+        ItemCreator.setArrowType(nextCommandArrow, PotionType.OOZING);
+        ItemCreator.setLore(nextCommandArrow, Arrays.asList("Showing commands [" + offsetShown + "-" + lastCommandIndexShown + "]"));
+        PersistentData.setItemData(nextCommandArrow, "next", true, PersistentDataType.BOOLEAN);
+        PersistentData.setItemString(nextCommandArrow, "type", "command");
+
+        ItemStack prevCommanArrow = ItemCreator.itemStackWithName(Material.TIPPED_ARROW, "Previous Item Page");
+        ItemCreator.setArrowType(prevCommanArrow, PotionType.HEALING);
+        ItemCreator.setLore(prevCommanArrow, Arrays.asList("Showing commands [" + offsetShown + "-" + lastCommandIndexShown + "]"));
+        PersistentData.setItemData(prevCommanArrow, "next", false, PersistentDataType.BOOLEAN);
+        PersistentData.setItemString(prevCommanArrow, "type", "command");
+
+        inv.setItem(37, prevCommanArrow);
+        inv.setItem(43, nextCommandArrow);
+        for (int i = 38; i < 43; i++) inv.setItem(i, ItemCreator.getFillItem());
+
+        AtomicInteger commandIndex = new AtomicInteger();
+        List<ItemStack> winCommandItems = lootItem.winCommands.stream()
+            .skip(offset)
+            .limit(5)
+            .map(command -> {
+                ItemStack commandItem = ItemCreator.itemStackWithName(Material.SPRUCE_SIGN, "/" + command);
+                ItemCreator.setLore(commandItem, Arrays.asList(LootItem.separator, "Click to edit command", LootItem.separator));
+                PersistentData.setItemString(commandItem, "type", "Command");
+                PersistentData.setItemData(commandItem, "index", commandIndex.getAndIncrement(), PersistentDataType.INTEGER);         
+                return commandItem;
+            })
+            .toList();
+
+        if (winCommandItems.size() == 1) 
+            inv.setItem(40, winCommandItems.get(0));
+        else {
+            for (int i = 0; i < 5; i++) {
+                if (i >= lootItem.winCommands.size()) break;
+                inv.setItem(i + 38, winCommandItems.get(i));
+            }
+        }
     }
 }
